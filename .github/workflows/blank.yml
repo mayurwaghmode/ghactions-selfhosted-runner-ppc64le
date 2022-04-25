@@ -16,12 +16,9 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  build:
+  amd64:
     # The type of runner that the job will run on
-    runs-on: ["self-hosted"]
-    strategy:
-      matrix:
-        runner: [ amd64,s390x,ppc64le ]
+    runs-on: amd64
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
@@ -29,3 +26,22 @@ jobs:
       # Runs a single command using the runners shell
       - name: Run a one-line script
         run: echo "Hello, world!"; cat /etc/os-release; uname -a
+  ppc64le:
+      runs-on: ppc64le
+      steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+
+      # Runs a single command using the runners shell
+      - name: Run a one-line script
+        run: echo "Hello, world!"; cat /etc/os-release; uname -a
+  s390x:
+      runs-on: s390x
+      steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+
+      # Runs a single command using the runners shell
+      - name: Run a one-line script
+        run: echo "Hello, world!"; cat /etc/os-release; uname -a
+    
