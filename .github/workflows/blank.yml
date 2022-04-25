@@ -21,7 +21,7 @@ jobs:
     runs-on: ["self-hosted"]
     strategy:
       matrix:
-        runner: [ ppc64le, ppc64le ]
+        runner: [ ppc64le, s390x ]
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
