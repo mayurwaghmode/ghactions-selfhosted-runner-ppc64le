@@ -2,6 +2,17 @@
 
 name: ppc64le runner ci
 
+env:
+  USERNAME: ${{ secrets.USERNAME }}
+  PASSWORD: ${{ secrets.PASSWORD }}
+  IMAGE_REGISTRY: ${{ secrets.IMAGE_REGISTRY }}
+  IMAGE_NAMESPACE: ${{ secrets.IMAGE_NAMESPACE }}
+  IMAGE_NAME: ${{ secrets.IMAGE_NAME }}
+  IMAGE_TAG: ${{ secrets.IMAGE_TAG }}
+  ARCH: ${{ secrets.ARCH }}
+  PYXIS_API_TOKEN: ${{ secrets.PYXIS_API_TOKEN }}
+  PROJECT_ID: ${{ secrets.PROJECT_ID }}
+  
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
@@ -23,7 +34,13 @@ jobs:
       - uses: actions/checkout@v3
 
       # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo "Hello, world!"; cat /etc/os-release; uname -a
+      - name: Install preflight 
+        run: |
+          wget https://github.com/redhat-openshift-ecosystem/openshift-preflight/releases/download/1.2.0/preflight-linux-"$ARCH"
+          chmod u+x preflight-linux-"$ARCH"
+          sudo mv preflight-linux-"$ARCH" /usr/local/bin/preflight
+          preflight --version
  
-    
+      - name: Check container-image
+        run: |
+          preflight check container "$IMAGE_REGISTRY"/"$IMAGE_NAMESPACE"/"$IMAGE_NAME":"$IMAGE_TAG"
